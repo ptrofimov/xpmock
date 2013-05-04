@@ -30,7 +30,7 @@ class MyMock extends My
     }
 }
 
-class MyTest extends PHPUnit_Framework_TestCase
+class MyTest extends \PHPUnit_Framework_TestCase
 {
     use \Pumock\TestCaseTrait;
 
@@ -50,6 +50,8 @@ class MyTest extends PHPUnit_Framework_TestCase
  * + mocks for stubs
  * + invoke count restrictions
  * + callbacks as values
+ * + add composer
+ * add tests
  * this for callbacks
  * with parameters restrictions
  * mock for non existent classes
