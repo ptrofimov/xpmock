@@ -9,6 +9,8 @@ class TestCaseTraitTest extends \PHPUnit_Framework_TestCase
 
     public function testMock()
     {
-        $this->mock('Stubs\My');
+        $mock = $this->mock('Stubs\My');
+
+        $this->assertInstanceOf('Stubs\My', $mock);
     }
 }
