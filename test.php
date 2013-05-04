@@ -79,3 +79,20 @@ class MyTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, $my->getNumber(1));
     }
 }
+
+
+/*
+ * TODO
+ *
+ * + mocks for stubs
+ * + invoke count restrictions
+ * + callbacks as values
+ * this for callbacks
+ * with parameters restrictions
+ * mock for non existent classes
+ * mocks for objects
+ * mocks for stdclass
+ * mocks for static methods
+ * mocks for abstract classes
+ * mocks for traits
+ */
