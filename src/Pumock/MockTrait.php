@@ -12,14 +12,14 @@ trait MockTrait
 
     private function mockMethod($method, $value, $invokeCount = null)
     {
-        if ($value instanceof Closure) {
-            $value = PHPUnit_Framework_TestCase::returnCallback($value);
+        if ($value instanceof \Closure) {
+            $value = \PHPUnit_Framework_TestCase::returnCallback($value);
         } elseif (!$value instanceof PHPUnit_Framework_MockObject_Stub) {
-            $value = PHPUnit_Framework_TestCase::returnValue($value);
+            $value = \PHPUnit_Framework_TestCase::returnValue($value);
         }
 
         if (is_null($invokeCount)) {
-            $invokeCount = PHPUnit_Framework_TestCase::any();
+            $invokeCount = \PHPUnit_Framework_TestCase::any();
         }
 
         $this->mock->expects($invokeCount)
