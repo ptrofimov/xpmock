@@ -10,7 +10,7 @@ trait MockTrait
         $this->mock = $mock;
     }
 
-    private function mockMethod($method, $value, $invokeCount = null)
+    private function __mock($method, $value, $invokeCount = null)
     {
         if ($value instanceof \Closure) {
             $value = \PHPUnit_Framework_TestCase::returnCallback($value);

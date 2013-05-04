@@ -15,12 +15,18 @@ class MyMock extends My
 
     public function getNumber($i)
     {
-        return call_user_func_array([$this->mock, 'getNumber'], func_get_args());
+        return call_user_func_array(
+            [$this->mock, 'getNumber'],
+            func_get_args()
+        );
     }
 
-    public function mockGetNumber($value, $invokeCount = null)
+    public function mockGetNumber()
     {
-        return $this->mockMethod('getNumber', $value, $invokeCount);
+        return call_user_func_array(
+            [$this, '__mock'],
+            array_merge(['getNumber'], func_get_args())
+        );
     }
 }
 
