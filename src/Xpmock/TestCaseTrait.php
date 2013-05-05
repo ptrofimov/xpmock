@@ -35,7 +35,7 @@ trait TestCaseTrait
             }
             $params = implode(',', $params);
 
-            $methods[] = "public function {$method->getName()}($params){return call_user_func_array([\$this->mock,'{$method->getName()}'],func_get_args());}";
+            $methods[] = "public function {$method->getName()}($params){return call_user_func_array([self::\$mock,'{$method->getName()}'],func_get_args());}";
             $ucMethod = ucfirst($method->getName());
             $methods[] = "public function mock{$ucMethod}(){return call_user_func_array([\$this,'__mock'],array_merge(['{$method->getName()}'],func_get_args()));}";
         }
