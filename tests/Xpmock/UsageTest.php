@@ -14,7 +14,7 @@ class UsageTest extends \PHPUnit_Framework_TestCase
         $mockProperty->getValue()->__phpunit_cleanup();
     }
 
-    public function testReturn()
+    public function testReturnValue()
     {
         $mock = $this->mock('Stubs\Usage');
 
@@ -23,6 +23,30 @@ class UsageTest extends \PHPUnit_Framework_TestCase
         $mock->mockGetNumber(1);
 
         $this->assertEquals(1, $mock->getNumber());
+    }
+
+    public function testReturnNativeValue()
+    {
+        $mock = $this->mock('Stubs\Usage');
+
+        $this->assertNull($mock->getNumber());
+
+        $mock->mockGetNumber($this->returnValue(1));
+
+        $this->assertEquals(1, $mock->getNumber());
+    }
+
+    public function testReturnCallback()
+    {
+        $mock = $this->mock('Stubs\Usage');
+
+        $this->assertNull($mock->getNumber());
+
+        $mock->mockGetNumber(function () {
+            return $this;
+        });
+
+        $this->assertInstanceOf('Stubs\Usage', $mock->getNumber());
     }
 
     public function testExpectsOnce()
@@ -57,5 +81,82 @@ class UsageTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->cleanupMock($mock);
+    }
+
+    public function testWillExpects()
+    {
+        $mock = $this->mock('Stubs\Usage');
+
+        $mock->mockGetNumber(1, $this->once());
+
+        $this->assertEquals(1, $mock->getNumber());
+
+        try {
+            $mock->getNumber();
+            $this->fail();
+        } catch (\PHPUnit_Framework_ExpectationFailedException $ex) {
+        }
+
+        $this->cleanupMock($mock);
+    }
+
+    public function testWithWill()
+    {
+        $mock = $this->mock('Stubs\Usage');
+
+        $mock->mockGetNumber([1, 2, 3], 1);
+
+        $this->assertEquals(1, $mock->getNumber(1, 2, 3));
+
+        try {
+            $mock->getNumber();
+            $this->fail();
+        } catch (\PHPUnit_Framework_ExpectationFailedException $ex) {
+        }
+
+        $this->cleanupMock($mock);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testWithWillInvalid()
+    {
+        $mock = $this->mock('Stubs\Usage');
+
+        $mock->mockGetNumber('invalid', 1);
+    }
+
+    public function testWithWillExpects()
+    {
+        $mock = $this->mock('Stubs\Usage');
+
+        $mock->mockGetNumber([1, 2, 3], 1, $this->once());
+
+        $this->assertEquals(1, $mock->getNumber(1, 2, 3));
+
+        try {
+            $mock->getNumber();
+            $this->fail();
+        } catch (\PHPUnit_Framework_ExpectationFailedException $ex) {
+        }
+
+        try {
+            $mock->getNumber(1, 2, 3);
+            $this->fail();
+        } catch (\PHPUnit_Framework_ExpectationFailedException $ex) {
+        }
+
+        $this->cleanupMock($mock);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testWithWillExpectsInvalid()
+    {
+        $mock = $this->mock('Stubs\Usage');
+
+        $mock->mockGetNumber('invalid', 1, 1);
     }
 }

@@ -55,11 +55,11 @@ trait MockTrait
             $will = TestCase::returnValue($will);
         }
 
-        self::$mock->expects($expects)
+        $expect = self::$mock->expects($expects)
             ->method($method)
             ->will($will);
         if (!is_null($with)) {
-            self::$mock->with($with);
+            call_user_func_array([$expect, 'with'], $with);
         }
 
         return $this;
