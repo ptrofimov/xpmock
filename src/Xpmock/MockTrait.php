@@ -1,6 +1,10 @@
 <?php
 namespace Xpmock;
 
+use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit_Framework_MockObject_Stub as Stub;
+use PHPUnit_Framework_MockObject_Matcher_InvokedRecorder as InvokedRecorder;
+
 trait MockTrait
 {
     private static $mock;
@@ -9,21 +13,54 @@ trait MockTrait
     {
     }
 
-    private function __mock($method, $value, $invokeCount = null)
+    private function __mock()
     {
-        if ($value instanceof \Closure) {
-            $value = \PHPUnit_Framework_TestCase::returnCallback($value);
-        } elseif (!$value instanceof PHPUnit_Framework_MockObject_Stub) {
-            $value = \PHPUnit_Framework_TestCase::returnValue($value);
+        $expects = TestCase::any();
+        $with = null;
+        $will = TestCase::returnValue(null);
+
+        $args = func_get_args();
+
+        if (count($args) == 0) {
+            throw new \InvalidArgumentException();
         }
 
-        if (is_null($invokeCount)) {
-            $invokeCount = \PHPUnit_Framework_TestCase::any();
+        $method = array_shift($args);
+
+        if (count($args) == 1) {
+            if ($args[0] instanceof InvokedRecorder) {
+                $expects = $args[0];
+            } else {
+                $will = $args[0];
+            }
+        } elseif (count($args) == 2) {
+            if ($args[1] instanceof InvokedRecorder) {
+                list($will, $expects) = $args;
+            } elseif (is_array($args[0])) {
+                list($with, $will) = $args;
+            } else {
+                throw new \InvalidArgumentException();
+            }
+        } elseif (count($args) == 3) {
+            if (is_array($args[0]) && $args[2] instanceof InvokedRecorder) {
+                list($with, $will, $expects) = $args;
+            } else {
+                throw new \InvalidArgumentException();
+            }
         }
 
-        self::$mock->expects($invokeCount)
+        if ($will instanceof \Closure) {
+            $will = TestCase::returnCallback($will->bindTo(self::$mock));
+        } elseif (!$will instanceof Stub) {
+            $will = TestCase::returnValue($will);
+        }
+
+        self::$mock->expects($expects)
             ->method($method)
-            ->will($value);
+            ->will($will);
+        if (!is_null($with)) {
+            self::$mock->with($with);
+        }
 
         return $this;
     }

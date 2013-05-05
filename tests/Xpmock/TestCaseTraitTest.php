@@ -86,5 +86,7 @@ class TestCaseTraitTest extends \PHPUnit_Framework_TestCase
         $mockProperty->setAccessible(true);
 
         $this->assertInstanceOf('Stubs\Signature', $mockProperty->getValue($mock));
+
+        $this->any();
     }
 }
