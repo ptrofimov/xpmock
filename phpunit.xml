@@ -17,7 +17,7 @@
          strict="false"
          verbose="false">
     <testsuites>
-        <testsuite name="Pumock">
+        <testsuite name="Xpmock">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>

@@ -1,5 +1,5 @@
 <?php
-namespace Pumock;
+namespace Xpmock;
 
 trait TestCaseTrait
 {

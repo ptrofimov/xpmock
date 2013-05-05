@@ -1,5 +1,5 @@
 <?php
-namespace Pumock;
+namespace Xpmock;
 
 require_once(dirname(__DIR__) . '/stubs/My.php');
 

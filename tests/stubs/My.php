@@ -11,7 +11,7 @@ class My
 
 class MyMock extends My
 {
-    use \Pumock\MockTrait;
+    use \Xpmock\MockTrait;
 
     public function getNumber($i)
     {

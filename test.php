@@ -3,7 +3,7 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 class MyTest extends \PHPUnit_Framework_TestCase
 {
-    use \Pumock\TestCaseTrait;
+    use \Xpmock\TestCaseTrait;
 
     public function testGetNumber()
     {
