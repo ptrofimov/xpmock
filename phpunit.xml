@@ -22,9 +22,9 @@
         </testsuite>
     </testsuites>
     <filter>
-        <blacklist>
+        <whitelist>
             <directory suffix=".php">./src</directory>
-        </blacklist>
+        </whitelist>
     </filter>
     <logging>
         <log type="coverage-html" target="./tests/report" charset="UTF-8"
