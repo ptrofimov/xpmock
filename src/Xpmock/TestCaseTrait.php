@@ -13,9 +13,31 @@ trait TestCaseTrait
         $class = new \ReflectionClass($className);
         /** @var $method \ReflectionMethod */
         foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            $methods[] = "public function {$method->getName()}(\$i){return call_user_func_array([\$this->mock,'{$method->getName()}'],func_get_args());}";
-            $methods[] = "public function mock{$method->getName()}(){return call_user_func_array([\$this,'__mock'],array_merge(['{$method->getName()}'],func_get_args()));}";
+            if ($method->isFinal() || $method->isStatic()) {
+                continue;
+            }
+            $params = [];
+            foreach ($method->getParameters() as $param) {
+                $p = '$' . $param->getName();
+                if ($param->isPassedByReference()) {
+                    $p = '&' . $p;
+                }
+                if ($param->isArray()) {
+                    $p = 'array ' . $p;
+                }
+                if ($param->getClass()) {
+                    $p = '\\' . $param->getClass()->getName() . ' ' . $p;
+                }
+                if ($param->isOptional()) {
+                    $p .= '=' . var_export($param->getDefaultValue(), true);
+                }
+                $params[] = $p;
+            }
+            $params = implode(',', $params);
 
+            $methods[] = "public function {$method->getName()}($params){return call_user_func_array([\$this->mock,'{$method->getName()}'],func_get_args());}";
+            $ucMethod = ucfirst($method->getName());
+            $methods[] = "public function mock{$ucMethod}(){return call_user_func_array([\$this,'__mock'],array_merge(['{$method->getName()}'],func_get_args()));}";
         }
 
         $className = $class->getShortName();
