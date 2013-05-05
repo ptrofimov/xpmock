@@ -45,10 +45,17 @@ trait TestCaseTrait
         $methods = implode($methods);
         $code = 'namespace ' . $class->getNamespaceName() . ";class $mockClassName extends $className{use \\Xpmock\\MockTrait;$methods}";
 
-        eval($code);
+        @eval($code);
 
         $mockClassName = $class->getNamespaceName() . '\\' . $mockClassName;
-        $myMock = new $mockClassName($mock);
+        if (!in_array($mockClassName, get_declared_classes())) {
+            throw new \RuntimeException("Failed to create mock for class '{$class->getName()}'");
+        }
+        $myMock = new $mockClassName();
+
+        $mockProperty = new \ReflectionProperty(get_class($myMock), 'mock');
+        $mockProperty->setAccessible(true);
+        $mockProperty->setValue($mock);
 
         return $myMock;
     }

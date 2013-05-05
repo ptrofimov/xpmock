@@ -81,5 +81,10 @@ class TestCaseTraitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(false, $params[5]->isPassedByReference());
         $this->assertEquals(true, $params[5]->isOptional());
         $this->assertEquals('CONSTANT', $params[5]->getDefaultValue());
+
+        $mockProperty = new \ReflectionProperty(get_class($mock), 'mock');
+        $mockProperty->setAccessible(true);
+
+        $this->assertInstanceOf('Stubs\Signature', $mockProperty->getValue($mock));
     }
 }

@@ -3,11 +3,10 @@ namespace Xpmock;
 
 trait MockTrait
 {
-    private $mock;
+    private static $mock;
 
-    public function __construct($mock)
+    public function __construct()
     {
-        $this->mock = $mock;
     }
 
     private function __mock($method, $value, $invokeCount = null)
@@ -22,7 +21,7 @@ trait MockTrait
             $invokeCount = \PHPUnit_Framework_TestCase::any();
         }
 
-        $this->mock->expects($invokeCount)
+        self::$mock->expects($invokeCount)
             ->method($method)
             ->will($value);
 
