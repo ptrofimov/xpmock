@@ -21,9 +21,13 @@ class MockBuilder
     {
         if ($method == 'new') {
             $mock = $this->that->getMockBuilder($this->className)
-                ->setMethods(array_keys($this->methods))
-                ->disableOriginalConstructor()
-                ->getMock();
+                ->setMethods(array_keys($this->methods));
+            if ($args) {
+                $mock->setConstructorArgs($args);
+            } else {
+                $mock->disableOriginalConstructor();
+            }
+            $mock = $mock->getMock();
             foreach ($this->methods as $method => $item) {
                 $expect = $mock->expects($item['expects'])
                     ->method($method)
