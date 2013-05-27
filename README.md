@@ -12,7 +12,7 @@ $this->mock('MyClass')
     ->new();
 ```
 
-instead that
+instead of that
 
 ```php
 $mock = $this->getMockBuilder('MyClass')
