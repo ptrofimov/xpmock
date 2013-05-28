@@ -1,5 +1,5 @@
 <?php
-namespace Xpmock2;
+namespace Xpmock;
 
 require_once(dirname(__DIR__) . '/stubs/Usage.php');
 
@@ -93,7 +93,7 @@ class UsageTest extends \PHPUnit_Framework_TestCase
     public function testWithWill()
     {
         $mock = $this->mock('Stubs\Usage')
-            ->getNumber([1, 2, 3], 1)
+            ->getNumber(array(1, 2, 3), 1)
             ->new();
 
         $this->assertEquals(1, $mock->getNumber(1, 2, 3));
@@ -119,7 +119,7 @@ class UsageTest extends \PHPUnit_Framework_TestCase
     public function testWithWillExpects()
     {
         $mock = $this->mock('Stubs\Usage')
-            ->getNumber([1, 2, 3], 1, $this->once())
+            ->getNumber(array(1, 2, 3), 1, $this->once())
             ->new();
 
         $this->assertEquals(1, $mock->getNumber(1, 2, 3));

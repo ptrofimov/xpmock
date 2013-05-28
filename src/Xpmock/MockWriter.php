@@ -1,33 +1,45 @@
 <?php
-namespace Xpmock2;
+namespace Xpmock;
 
 use PHPUnit_Framework_TestCase as TestCase;
 use PHPUnit_Framework_MockObject_Stub as Stub;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_MockObject_Matcher_InvokedRecorder as InvokedRecorder;
 
-class MockBuilder
+/**
+ * Class to help with mock-writing
+ */
+class MockWriter
 {
+    /** @var string */
     private $className;
-    private $that;
-    private $methods = [];
+    /** @var TestCase */
+    private $testCase;
+    /** @var array */
+    private $methods = array();
 
-    public function __construct($className, $that)
+    /**
+     * @param string $className
+     * @param TestCase $testCase
+     */
+    public function __construct($className, TestCase $testCase)
     {
         $this->className = (string) $className;
-        $this->that = $that;
+        $this->testCase = $testCase;
     }
 
+    /** @return self|MockObject */
     public function __call($method, array $args)
     {
         if ($method == 'new') {
-            $mock = $this->that->getMockBuilder($this->className)
+            $mockBuilder = $this->testCase->getMockBuilder($this->className)
                 ->setMethods(array_keys($this->methods));
             if ($args) {
-                $mock->setConstructorArgs($args);
+                $mockBuilder->setConstructorArgs($args);
             } else {
-                $mock->disableOriginalConstructor();
+                $mockBuilder->disableOriginalConstructor();
             }
-            $mock = $mock->getMock();
+            $mock = $mockBuilder->getMock();
             foreach ($this->methods as $method => $item) {
                 $expect = $mock->expects($item['expects'])
                     ->method($method)
@@ -42,10 +54,6 @@ class MockBuilder
         $expects = TestCase::any();
         $with = null;
         $will = TestCase::returnValue(null);
-
-        if (count($args) == 0) {
-            throw new \InvalidArgumentException();
-        }
 
         if (count($args) == 1) {
             if ($args[0] instanceof InvokedRecorder) {
@@ -70,16 +78,18 @@ class MockBuilder
         }
 
         if ($will instanceof \Closure) {
-            $will = TestCase::returnCallback($will /*->bindTo(self::$mock)*/);
+            $will = TestCase::returnCallback($will);
+        } elseif ($will instanceof \Exception) {
+            $will = TestCase::throwException($will);
         } elseif (!$will instanceof Stub) {
             $will = TestCase::returnValue($will);
         }
 
-        $this->methods[$method] = [
+        $this->methods[$method] = array(
             'expects' => $expects,
             'with' => $with,
             'will' => $will,
-        ];
+        );
 
         return $this;
     }
