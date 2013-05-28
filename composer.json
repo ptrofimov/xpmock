@@ -1,4 +1,6 @@
 {
+    "name":"ptrofimov/xpmock",
+    "description":"PHPUnit mocks: simple syntax",
     "require":{
         "php":">=5.3.0"
     },
