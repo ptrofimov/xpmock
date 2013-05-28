@@ -1,9 +1,8 @@
 # xpmock
 
-Trait for PHPUnit-based unit-tests that simplifies mocking objects.
+*PHPUnit mocks: simple syntax*
 
 Write this
-
 ```php
 $this->mock('MyClass')
     ->getBool(true)
@@ -11,9 +10,7 @@ $this->mock('MyClass')
     ->getString('string')
     ->new();
 ```
-
 instead of that
-
 ```php
 $mock = $this->getMockBuilder('MyClass')
     ->setMethods(['getBool', 'getNumber', 'getString'])
