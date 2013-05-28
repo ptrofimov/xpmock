@@ -27,7 +27,7 @@ $mock->expects($this->any())
     ->will($this->returnValue('string'));
 ```
 
-Trait generates full-functional native PHPUnit mocks.
+Tool generates full-functional native PHPUnit mocks.
 
 ## Syntax short description
 
@@ -55,7 +55,7 @@ $this->mock('MyClass')
 
 ## Installation
 
-1. If you don't have composer, [install it][http://getcomposer.org]
+1. If you don't have composer, [install it](http://getcomposer.org)
 2. Add xpmock to your project
 ```
 composer require ptrofimov/xpmock:dev-master
@@ -70,7 +70,7 @@ class MyTestCase extends PHPUnit_Framework_TestCase
     use \Xpmock\TestCaseTrait;
 }
 ```
-Option 2. Extends your test case from xpmock's one:
+Option 2. Extend your test case from xpmock's one:
 ```php
 class MyTestCase extends \Xpmock\TestCase
 {
