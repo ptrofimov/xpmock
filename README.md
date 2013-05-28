@@ -47,8 +47,33 @@ $this->mock('MyClass')
 ->getNumber([1,2,3], 1)
 // $mock->expects($this->once())->method('getNumber')->with(1,2,3)->will($this->returnValue(1))
 ->getNumber([1,2,3], 1, $this->once())
-$this->getMockBuilder('MyClass')->disableOriginalConstructor()->getMock()
+// $this->getMockBuilder('MyClass')->disableOriginalConstructor()->getMock()
 ->new()
-$this->getMockBuilder('MyClass')->setConstructorArgs([1,2,3])->getMock()
+// $this->getMockBuilder('MyClass')->setConstructorArgs([1,2,3])->getMock()
 ->new(1, 2, 3)
+```
+
+## Installation
+
+1. If you don't have composer, [install it][http://getcomposer.org]
+2. Add xpmock to your project
+```
+composer require ptrofimov/xpmock:dev-master
+```
+
+## Usage
+
+Option 1. Add trait to existing test case:
+```php
+class MyTestCase extends PHPUnit_Framework_TestCase
+{
+    use \Xpmock\TestCaseTrait;
+}
+```
+Option 2. Extends your test case from xpmock's one:
+```php
+class MyTestCase extends \Xpmock\TestCase
+{
+    
+}
 ```
