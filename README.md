@@ -28,3 +28,10 @@ $mock->expects($this->any())
 ```
 
 Trait generates full-functional native PHPUnit mocks.
+
+## Short description
+
+```php
+$this->mock('MyClass')
+    ->getNumber() // $mock->expects($this->any())->method('getNumber')->will($this->returnValue(null));
+```
