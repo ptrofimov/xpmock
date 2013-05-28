@@ -12,37 +12,64 @@ class UsageTest extends \PHPUnit_Framework_TestCase
         $mock->__phpunit_cleanup();
     }
 
+    /** @return \Stubs\Usage */
+    private function mockUsage()
+    {
+        return $this->mock('Stubs\Usage');
+    }
+
+    public function testMock()
+    {
+        $mock = $this->mockUsage();
+
+        $this->assertInstanceOf('Xpmock\MockWriter', $mock);
+    }
+
     public function testReturnValue()
     {
-        $mock = $this->mock('Stubs\Usage')
-            ->getNumber(1)
+        $mock = $this->mockUsage()
+            ->getNumber(123)
             ->new();
 
-        $this->assertEquals(1, $mock->getNumber());
+        $this->assertEquals(123, $mock->getNumber());
     }
 
     public function testReturnNativeValue()
     {
-        $mock = $this->mock('Stubs\Usage')
-            ->getNumber($this->returnValue(1))
+        $mock = $this->mockUsage()
+            ->getNumber($this->returnValue(112))
             ->new();
 
-        $this->assertEquals(1, $mock->getNumber());
+        $this->assertEquals(112, $mock->getNumber());
     }
 
     public function testReturnCallback()
     {
-        $mock = $this->mock('Stubs\Usage')
-            ->getNumber(function () {
-            return 1;
-        })->new();
+        $mock = $this->mockUsage()
+            ->getNumber(
+            function () {
+                return 156;
+            })
+            ->new();
 
-        $this->assertSame(1, $mock->getNumber());
+        $this->assertSame(156, $mock->getNumber());
+    }
+
+    /**
+     * @expectedException \LogicException
+     */
+    public function testReturnThrowException()
+    {
+        $mock = $this->mockUsage()
+            ->getNumber(new \LogicException())
+            ->new();
+
+        $mock->getNumber();
     }
 
     public function testExpectsOnce()
     {
-        $mock = $this->mock('Stubs\Usage')
+        $mock = $this->mockUsage()
             ->getNumber($this->once())
             ->new();
 
@@ -58,13 +85,12 @@ class UsageTest extends \PHPUnit_Framework_TestCase
 
     public function testExpectsTwice()
     {
-        $mock = $this->mock('Stubs\Usage')
+        $mock = $this->mockUsage()
             ->getNumber($this->exactly(2))
             ->new();
 
-        $this->assertNull($mock->getNumber());
-
         try {
+            $mock->getNumber();
             $this->verifyMockObjects();
             $this->fail();
         } catch (\PHPUnit_Framework_ExpectationFailedException $ex) {
@@ -75,11 +101,11 @@ class UsageTest extends \PHPUnit_Framework_TestCase
 
     public function testWillExpects()
     {
-        $mock = $this->mock('Stubs\Usage')
-            ->getNumber(1, $this->once())
+        $mock = $this->mockUsage()
+            ->getNumber(142, $this->once())
             ->new();
 
-        $this->assertEquals(1, $mock->getNumber());
+        $this->assertEquals(142, $mock->getNumber());
 
         try {
             $mock->getNumber();
@@ -92,11 +118,11 @@ class UsageTest extends \PHPUnit_Framework_TestCase
 
     public function testWithWill()
     {
-        $mock = $this->mock('Stubs\Usage')
-            ->getNumber(array(1, 2, 3), 1)
+        $mock = $this->mockUsage()
+            ->getNumber(array(1, 2, 3), 152)
             ->new();
 
-        $this->assertEquals(1, $mock->getNumber(1, 2, 3));
+        $this->assertEquals(152, $mock->getNumber(1, 2, 3));
 
         try {
             $mock->getNumber();
@@ -112,13 +138,13 @@ class UsageTest extends \PHPUnit_Framework_TestCase
      */
     public function testWithWillInvalid()
     {
-        $this->mock('Stubs\Usage')
-            ->getNumber('invalid', 1);
+        $this->mockUsage()
+            ->getNumber('not_array', 1);
     }
 
     public function testWithWillExpects()
     {
-        $mock = $this->mock('Stubs\Usage')
+        $mock = $this->mockUsage()
             ->getNumber(array(1, 2, 3), 1, $this->once())
             ->new();
 
@@ -144,7 +170,17 @@ class UsageTest extends \PHPUnit_Framework_TestCase
      */
     public function testWithWillExpectsInvalid()
     {
-        $this->mock('Stubs\Usage')
-            ->getNumber('invalid', 1, 1);
+        $this->mockUsage()
+            ->getNumber('not_array', 1, 1);
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Value 900 from constructor
+     */
+    public function testNew()
+    {
+        $this->mockUsage()
+            ->new(900);
     }
 }
