@@ -33,5 +33,10 @@ Trait generates full-functional native PHPUnit mocks.
 
 ```php
 $this->mock('MyClass')
-    ->getNumber() // $mock->expects($this->any())->method('getNumber')->will($this->returnValue(null));
+    // $mock->expects($this->any())->method('getNumber')->will($this->returnValue(null));
+    ->getNumber()
+    // $mock->expects($this->any())->method('getNumber')->will($this->returnValue(1));
+    ->getNumber(1)
+    // $mock->expects($this->any())->method('getNumber')->will($this->returnValue(1));
+    ->getNumber($this->returnValue(1))
 ```
