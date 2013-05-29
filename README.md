@@ -1,6 +1,14 @@
 # xpmock
 
-*PHPUnit mocks: simple syntax*
+PHPUnit is standard testing framework in PHP world.
+No wonder - it is nifty.
+But speaking about way of mocking objects in PHPUnit many people complain on a bit redundant syntax.
+They suggest many addons for PHPUnit to create mocks like Mockery (I know this is not just addon).
+
+But I am sure PHPUnit has well-developed mocking system.
+And this project XPMock is a way to simplify this syntax a bit.
+I need to underline that XPMock doesn't create some own mock objects.
+XPMock just calls the same PHPUnit methods creating the same native mocks but much simpler.
 
 Write this
 ```php
