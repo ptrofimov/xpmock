@@ -67,6 +67,10 @@ $this->stub('MyClass') // init stub (all methods return null by default)
 
 ->__set('property', $value)
 
+// inject mock to some object after creation (via Reflection)
+
+->injectTo($object, 'property')
+
 // create mock
 
 // $this->getMockBuilder('MyClass')->disableOriginalConstructor()->getMock()
