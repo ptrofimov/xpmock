@@ -19,6 +19,8 @@ class MockWriter
     private $methods = array();
     /** @var bool */
     private $isStub;
+    /** @var array */
+    private $properties = array();
 
     /**
      * @param string $className
@@ -54,6 +56,16 @@ class MockWriter
                     call_user_func_array([$expect, 'with'], $item['with']);
                 }
             }
+            foreach ($this->properties as $key => $value) {
+                $property = new \ReflectionProperty(get_class($mock), $key);
+                $property->setAccessible(true);
+                if ($property->isStatic()) {
+                    $property->setValue($value);
+                } else {
+                    $property->setValue($mock, $value);
+                }
+            }
+
             return $mock;
         }
 
@@ -96,6 +108,14 @@ class MockWriter
             'with' => $with,
             'will' => $will,
         );
+
+        return $this;
+    }
+
+    /** @return self */
+    public function __set($key, $value)
+    {
+        $this->properties[$key] = $value;
 
         return $this;
     }

@@ -63,6 +63,10 @@ $this->stub('MyClass') // init stub (all methods return null by default)
 // $mock->expects($this->once())->method('getNumber')->with(1,2,3)->will($this->returnValue(1))
 ->getNumber([1,2,3], 1, $this->once())
 
+// set non-public property after creation (via Reflection)
+
+->__set('property', $value)
+
 // create mock
 
 // $this->getMockBuilder('MyClass')->disableOriginalConstructor()->getMock()
