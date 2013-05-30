@@ -17,23 +17,29 @@ class MockWriter
     private $testCase;
     /** @var array */
     private $methods = array();
+    /** @var bool */
+    private $isStub;
 
     /**
      * @param string $className
      * @param TestCase $testCase
+     * @param bool $isStub
      */
-    public function __construct($className, TestCase $testCase)
+    public function __construct($className, TestCase $testCase, $isStub = false)
     {
         $this->className = (string) $className;
         $this->testCase = $testCase;
+        $this->isStub = $isStub === true;
     }
 
     /** @return self|MockObject */
     public function __call($method, array $args)
     {
         if ($method == 'new') {
-            $mockBuilder = $this->testCase->getMockBuilder($this->className)
-                ->setMethods(array_keys($this->methods));
+            $mockBuilder = $this->testCase->getMockBuilder($this->className);
+            if (!$this->isStub) {
+                $mockBuilder->setMethods(array_keys($this->methods));
+            }
             if ($args) {
                 $mockBuilder->setConstructorArgs($args);
             } else {

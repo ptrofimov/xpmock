@@ -12,4 +12,14 @@ class TestCase extends \PHPUnit_Framework_TestCase
     {
         return new MockWriter($className, $this);
     }
+
+    /**
+     * @param string $className
+     *
+     * @return MockWriter
+     */
+    public function stub($className)
+    {
+        return new MockWriter($className, $this, true);
+    }
 }

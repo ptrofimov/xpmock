@@ -40,7 +40,14 @@ Tool generates full-functional native PHPUnit mocks.
 ## Syntax short description
 
 ```php
-$this->mock('MyClass')
+
+// init mock writer
+
+$this->mock('MyClass') // init mock (all methods are real by default)
+$this->stub('MyClass') // init stub (all methods return null by default)
+
+// mock methods
+
 // $mock->expects($this->any())->method('getNumber')->will($this->returnValue(null))
 ->getNumber()
 // $mock->expects($this->any())->method('getNumber')->will($this->returnValue(1))
@@ -55,6 +62,9 @@ $this->mock('MyClass')
 ->getNumber([1,2,3], 1)
 // $mock->expects($this->once())->method('getNumber')->with(1,2,3)->will($this->returnValue(1))
 ->getNumber([1,2,3], 1, $this->once())
+
+// create mock
+
 // $this->getMockBuilder('MyClass')->disableOriginalConstructor()->getMock()
 ->new()
 // $this->getMockBuilder('MyClass')->setConstructorArgs([1,2,3])->getMock()
