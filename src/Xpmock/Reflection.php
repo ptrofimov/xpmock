@@ -26,4 +26,17 @@ class Reflection
             ? $property->getValue()
             : $property->getValue($this->object);
     }
+
+    public function __set($key, $value)
+    {
+        $property = new \ReflectionProperty($this->class, $key);
+        if (!$property->isPublic()) {
+            $property->setAccessible(true);
+        }
+        $property->isStatic()
+            ? $property->setValue($value)
+            : $property->setValue($this->object, $value);
+
+        return $this;
+    }
 }

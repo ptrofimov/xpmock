@@ -3,28 +3,67 @@ namespace Xpmock;
 
 class ReflectionTest extends \PHPUnit_Framework_TestCase
 {
-    public $publicProperty = 1;
-    public static $publicStaticProperty = 2;
-    private $privateProperty = 3;
-    private static $privateStaticProperty = 4;
+    public $publicProperty;
+    public static $publicStaticProperty;
+    private $privateProperty;
+    private static $privateStaticProperty;
 
-    public function dataProviderTestGetProperty()
+    protected function setUp()
     {
-        return [
-            [__CLASS__, 'publicStaticProperty', self::$publicStaticProperty],
-            [__CLASS__, 'privateStaticProperty', self::$privateStaticProperty],
-            [$this, 'publicProperty', $this->publicProperty],
-            [$this, 'publicStaticProperty', self::$publicStaticProperty],
-            [$this, 'privateProperty', $this->privateProperty],
-            [$this, 'privateStaticProperty', self::$privateStaticProperty],
-        ];
+        parent::setUp();
+
+        $this->publicProperty = 1;
+        self::$publicStaticProperty = 2;
+        $this->privateProperty = 3;
+        self::$privateStaticProperty = 4;
     }
 
-    /**
-     * @dataProvider dataProviderTestGetProperty
-     */
-    public function testGetProperty($classOrObject, $propertyName, $result)
+    private function reflect($classOrObject)
     {
-        $this->assertSame($result, (new Reflection($classOrObject))->{$propertyName});
+        return new Reflection($classOrObject);
+    }
+
+    public function testGetProperty()
+    {
+        $this->assertSame(
+            self::$publicStaticProperty,
+            $this->reflect(__CLASS__)->publicStaticProperty
+        );
+        $this->assertSame(
+            self::$privateStaticProperty,
+            $this->reflect(__CLASS__)->privateStaticProperty
+        );
+        $this->assertSame(
+            $this->publicProperty,
+            $this->reflect($this)->publicProperty
+        );
+        $this->assertSame(
+            self::$publicStaticProperty,
+            $this->reflect($this)->publicStaticProperty
+        );
+        $this->assertSame(
+            $this->privateProperty,
+            $this->reflect($this)->privateProperty
+        );
+        $this->assertSame(
+            self::$privateStaticProperty,
+            $this->reflect($this)->privateStaticProperty
+        );
+    }
+
+    public function testSetProperty()
+    {
+        $this->reflect(__CLASS__)->publicStaticProperty = 5;
+        $this->assertSame(5, self::$publicStaticProperty);
+        $this->reflect(__CLASS__)->privateStaticProperty = 5;
+        $this->assertSame(5, self::$privateStaticProperty);
+        $this->reflect($this)->publicProperty = 5;
+        $this->assertSame(5, $this->publicProperty);
+        $this->reflect($this)->publicStaticProperty = 5;
+        $this->assertSame(5, self::$publicStaticProperty);
+        $this->reflect($this)->privateProperty = 5;
+        $this->assertSame(5, $this->privateProperty);
+        $this->reflect($this)->privateStaticProperty = 5;
+        $this->assertSame(5, self::$privateStaticProperty);
     }
 }
