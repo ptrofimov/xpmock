@@ -66,4 +66,34 @@ class ReflectionTest extends \PHPUnit_Framework_TestCase
         $this->reflect($this)->privateStaticProperty = 5;
         $this->assertSame(5, self::$privateStaticProperty);
     }
+
+    public function publicMethod($number)
+    {
+        return $number + 1;
+    }
+
+    private function privateMethod($number)
+    {
+        return $number + 2;
+    }
+
+    public static function publicStaticMethod($number)
+    {
+        return $number + 3;
+    }
+
+    private static function privateStaticMethod($number)
+    {
+        return $number + 4;
+    }
+
+    public function testCallMethod()
+    {
+        $this->assertSame(4, $this->reflect(__CLASS__)->publicStaticMethod(1));
+        $this->assertSame(5, $this->reflect(__CLASS__)->privateStaticMethod(1));
+        $this->assertSame(2, $this->reflect($this)->publicMethod(1));
+        $this->assertSame(3, $this->reflect($this)->privateMethod(1));
+        $this->assertSame(4, $this->reflect($this)->publicStaticMethod(1));
+        $this->assertSame(5, $this->reflect($this)->privateStaticMethod(1));
+    }
 }

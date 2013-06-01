@@ -39,4 +39,15 @@ class Reflection
 
         return $this;
     }
+
+    public function __call($methodName, array $args)
+    {
+        $method = new \ReflectionMethod($this->class, $methodName);
+        if (!$method->isPublic()) {
+            $method->setAccessible(true);
+        }
+        return $method->isStatic()
+            ? $method->invokeArgs(null, $args)
+            : $method->invokeArgs($this->object, $args);
+    }
 }
