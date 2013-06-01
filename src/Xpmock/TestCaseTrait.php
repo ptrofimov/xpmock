@@ -22,4 +22,14 @@ trait TestCaseTrait
     {
         return new MockWriter($className, $this, true);
     }
+
+    /**
+     * @param string|object $classOrObject
+     *
+     * @return Reflection
+     */
+    public function reflect($classOrObject)
+    {
+        return new Reflection($classOrObject);
+    }
 }

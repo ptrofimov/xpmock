@@ -79,6 +79,30 @@ $this->stub('MyClass') // init stub (all methods return null by default)
 ->new(1, 2, 3)
 ```
 
+## Handy reflection methods
+
+```php
+
+// get value of any property: static/non-static, public/protected/private
+
+$value = $this->reflect('MyClass')->property; // class name (only static)
+$value = $this->reflect(new MyClass())->property; // object
+
+// set value of any property: static/non-static, public/protected/private property
+
+$this->reflect('MyClass')->property = $value; // class name (only static)
+$this->reflect(new MyClass())->property = $value; // object
+$this->reflect(new MyClass())
+    ->__set('property1', $value1)
+    ->__set('property2', $value2); // chain
+
+// call any method: static/non-static, public/protected/private
+
+$this->reflect('MyClass')->method($arg); // class name (only static)
+$this->reflect(new MyClass())->method($arg); // object
+
+```
+
 ## Installation
 
 1. If you don't have composer, [install it](http://getcomposer.org)

@@ -3,6 +3,8 @@ namespace Xpmock;
 
 class ReflectionTest extends \PHPUnit_Framework_TestCase
 {
+    use TestCaseTrait;
+
     public $publicProperty;
     public static $publicStaticProperty;
     private $privateProperty;
@@ -16,11 +18,6 @@ class ReflectionTest extends \PHPUnit_Framework_TestCase
         self::$publicStaticProperty = 2;
         $this->privateProperty = 3;
         self::$privateStaticProperty = 4;
-    }
-
-    private function reflect($classOrObject)
-    {
-        return new Reflection($classOrObject);
     }
 
     public function testGetProperty()

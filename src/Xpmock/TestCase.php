@@ -22,4 +22,14 @@ class TestCase extends \PHPUnit_Framework_TestCase
     {
         return new MockWriter($className, $this, true);
     }
+
+    /**
+     * @param string|object $classOrObject
+     *
+     * @return Reflection
+     */
+    public function reflect($classOrObject)
+    {
+        return new Reflection($classOrObject);
+    }
 }
