@@ -64,8 +64,8 @@ $this->stub('MyClass') // init stub (all methods return null by default)
 ->getNumber([1,2,3], 1, $this->once())
 // $mock->expects($this->any())->method('getNumber')->will($this->returnCallback(function(){return 1;}))
 ->getNumber(function(){return 1;})
-// $mock->expects($this->any())->method('getNumber')->will($this->throwException(new \Exception('error')))
-->getNumber(new \Exception('error'))
+// $mock->expects($this->any())->method('getNumber')->will($this->throwException(new \Exception('')))
+->getNumber(new \Exception(''))
 
 // set non-public property after creation (via Reflection)
 
@@ -119,7 +119,7 @@ composer require ptrofimov/xpmock:dev-master
 
 Option 1. Add trait to existing test case:
 ```php
-class MyTestCase extends PHPUnit_Framework_TestCase
+class MyTestCase extends \PHPUnit_Framework_TestCase
 {
     use \Xpmock\TestCaseTrait;
 }
