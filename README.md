@@ -62,6 +62,10 @@ $this->stub('MyClass') // init stub (all methods return null by default)
 ->getNumber([1,2,3], 1)
 // $mock->expects($this->once())->method('getNumber')->with(1,2,3)->will($this->returnValue(1))
 ->getNumber([1,2,3], 1, $this->once())
+// $mock->expects($this->any())->method('getNumber')->will($this->returnCallback(function(){return 1;}))
+->getNumber(function(){return 1;})
+// $mock->expects($this->any())->method('getNumber')->will($this->throwException(new \Exception('error')))
+->getNumber(new \Exception('error'))
 
 // set non-public property after creation (via Reflection)
 
