@@ -1,5 +1,7 @@
 # xpmock
 
+Introduction [[in English]](http://ptrofimov.github.io/) [[in Russian]](http://habrahabr.ru/post/183010/)
+
 PHPUnit is standard testing framework in PHP world.
 No wonder - it is nifty.
 But speaking about way of mocking objects in PHPUnit many people complain on a bit redundant syntax.
