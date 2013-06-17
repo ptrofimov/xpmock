@@ -55,7 +55,7 @@ class MockWriter
                     ->method($method)
                     ->will($item['will']);
                 if (!is_null($item['with'])) {
-                    call_user_func_array([$expect, 'with'], $item['with']);
+                    call_user_func_array(array($expect, 'with'), $item['with']);
                 }
             }
             foreach ($this->properties as $key => $value) {
