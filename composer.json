@@ -1,6 +1,7 @@
 {
     "name":"ptrofimov/xpmock",
-    "description":"PHPUnit mocks: simple syntax",
+    "description":"PHPUnit: simple syntax to create mock-objects",
+    "license":"MIT",
     "require":{
         "php":">=5.3.0"
     },
