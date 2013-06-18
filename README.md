@@ -1,5 +1,7 @@
 # xpmock
 
+[![Build Status](https://travis-ci.org/ptrofimov/xpmock.png?branch=master)](https://travis-ci.org/ptrofimov/xpmock)
+
 Introduction [[in English]](http://ptrofimov.github.io/) [[in Russian]](http://habrahabr.ru/post/183010/)
 
 PHPUnit is standard testing framework in PHP world.
