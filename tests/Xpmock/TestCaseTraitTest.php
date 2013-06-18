@@ -3,10 +3,8 @@ namespace Xpmock;
 
 require_once(dirname(__DIR__) . '/stubs/Usage.php');
 
-class TestCaseTraitTest extends \PHPUnit_Framework_TestCase
+class TestCaseTraitTest extends TestCase
 {
-    use TestCaseTrait;
-
     private function getProperty($classOrObject, $property)
     {
         $property = new \ReflectionProperty(

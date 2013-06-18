@@ -1,10 +1,8 @@
 <?php
 namespace Xpmock;
 
-class ReflectionTest extends \PHPUnit_Framework_TestCase
+class ReflectionTest extends TestCase
 {
-    use TestCaseTrait;
-
     public $publicProperty;
     public static $publicStaticProperty;
     private $privateProperty;

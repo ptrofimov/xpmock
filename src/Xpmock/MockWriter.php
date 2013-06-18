@@ -1,7 +1,7 @@
 <?php
 namespace Xpmock;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit_Framework_TestCase as PhpUnitTestCase;
 use PHPUnit_Framework_MockObject_Stub as Stub;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_MockObject_Matcher_InvokedRecorder as InvokedRecorder;
@@ -107,11 +107,11 @@ class MockWriter
         }
 
         if ($will instanceof \Closure) {
-            $will = TestCase::returnCallback($will);
+            $will = PhpUnitTestCase::returnCallback($will);
         } elseif ($will instanceof \Exception) {
-            $will = TestCase::throwException($will);
+            $will = PhpUnitTestCase::throwException($will);
         } elseif (!$will instanceof Stub) {
-            $will = TestCase::returnValue($will);
+            $will = PhpUnitTestCase::returnValue($will);
         }
 
         $this->methods[$method] = array(
@@ -134,7 +134,7 @@ class MockWriter
     /** @return self */
     public function injectTo($object, $property)
     {
-        $this->injectTo[] = [$object, $property];
+        $this->injectTo[] = array($object, $property);
 
         return $this;
     }

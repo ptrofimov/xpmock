@@ -3,10 +3,8 @@ namespace Xpmock;
 
 require_once(dirname(__DIR__) . '/stubs/Usage.php');
 
-class UsageTest extends \PHPUnit_Framework_TestCase
+class UsageTest extends TestCase
 {
-    use TestCaseTrait;
-
     private function cleanupMock($mock)
     {
         $mock->__phpunit_cleanup();
