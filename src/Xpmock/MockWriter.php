@@ -29,7 +29,7 @@ class MockWriter
      * @param TestCase $testCase
      * @param bool $isStub
      */
-    public function __construct($className, TestCase $testCase, $isStub = false)
+    public function __construct($className, PhpUnitTestCase $testCase, $isStub = false)
     {
         $this->className = (string) $className;
         $this->testCase = $testCase;
