@@ -8,7 +8,7 @@ trait TestCaseTrait
      *
      * @return MockWriter
      */
-    public function mock($className)
+    public function mock($className = 'stdClass')
     {
         return new MockWriter($className, $this);
     }

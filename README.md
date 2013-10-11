@@ -135,3 +135,15 @@ class MyTestCase extends \Xpmock\TestCase
     
 }
 ```
+
+## NEW
+
+If you need to create object with some methods and classname doesn't matter, you could easily do it like this:
+```php
+$mock = $this->mock()
+    ->getString('string')
+    ->getNumber(function () {
+        return 2 + 2;
+    })
+    ->new();
+```
