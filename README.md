@@ -71,14 +71,6 @@ $this->stub('MyClass') // init stub (all methods return null by default)
 // $mock->expects($this->any())->method('getNumber')->will($this->throwException(new \Exception('')))
 ->getNumber(new \Exception(''))
 
-// set non-public property after creation (via Reflection)
-
-->__set('property', $value)
-
-// inject mock to some object after creation (via Reflection)
-
-->injectTo($object, 'property')
-
 // create mock
 
 // $this->getMockBuilder('MyClass')->disableOriginalConstructor()->getMock()
@@ -128,7 +120,7 @@ class MyTestCase extends \PHPUnit_Framework_TestCase
     use \Xpmock\TestCaseTrait;
 }
 ```
-Option 2. Extend your test case from xpmock's one:
+OR Option 2. Extend your test case from xpmock's one:
 ```php
 class MyTestCase extends \Xpmock\TestCase
 {

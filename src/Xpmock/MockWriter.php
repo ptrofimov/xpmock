@@ -19,10 +19,6 @@ class MockWriter
     private $methods = array();
     /** @var bool */
     private $isStub;
-    /** @var array */
-    private $properties = array();
-    /** @var array */
-    private $injectTo = array();
 
     /**
      * @param string $className
@@ -56,24 +52,6 @@ class MockWriter
                     ->will($item['will']);
                 if (!is_null($item['with'])) {
                     call_user_func_array(array($expect, 'with'), $item['with']);
-                }
-            }
-            foreach ($this->properties as $key => $value) {
-                $property = new \ReflectionProperty(get_class($mock), $key);
-                $property->setAccessible(true);
-                if ($property->isStatic()) {
-                    $property->setValue($value);
-                } else {
-                    $property->setValue($mock, $value);
-                }
-            }
-            foreach ($this->injectTo as $target) {
-                $property = new \ReflectionProperty(get_class($target[0]), $target[1]);
-                $property->setAccessible(true);
-                if ($property->isStatic()) {
-                    $property->setValue($mock);
-                } else {
-                    $property->setValue($target[0], $mock);
                 }
             }
 
@@ -119,22 +97,6 @@ class MockWriter
             'with' => $with,
             'will' => $will,
         );
-
-        return $this;
-    }
-
-    /** @return self */
-    public function __set($key, $value)
-    {
-        $this->properties[$key] = $value;
-
-        return $this;
-    }
-
-    /** @return self */
-    public function injectTo($object, $property)
-    {
-        $this->injectTo[] = array($object, $property);
 
         return $this;
     }
