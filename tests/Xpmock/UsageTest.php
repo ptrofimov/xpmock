@@ -98,6 +98,17 @@ class UsageTest extends TestCase
         $this->cleanupMock($mock);
     }
 
+    public function testExpectsAt()
+    {
+        $mock = $this->mockUsage()
+            ->getNumber(1, $this->at(0))
+            ->getNumber(2, $this->at(1))
+            ->new();
+
+        $this->assertEquals(1, $mock->getNumber());
+        $this->assertEquals(2, $mock->getNumber());
+    }
+
     public function testWillExpects()
     {
         $mock = $this->mockUsage()
