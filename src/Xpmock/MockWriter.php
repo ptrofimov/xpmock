@@ -5,6 +5,7 @@ use PHPUnit_Framework_TestCase as PhpUnitTestCase;
 use PHPUnit_Framework_MockObject_Stub as Stub;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_MockObject_Matcher_InvokedRecorder as InvokedRecorder;
+use PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex as InvokedAtIndex;
 
 /**
  * Class to help with mock-writing
@@ -16,7 +17,7 @@ class MockWriter
     /** @var TestCase */
     private $testCase;
     /** @var array */
-    private $methods = array();
+    private $items = array();
     /** @var bool */
     private $isStub;
 
@@ -38,7 +39,7 @@ class MockWriter
         if ($method == 'new') {
             $mockBuilder = $this->testCase->getMockBuilder($this->className);
             if (!$this->isStub) {
-                $mockBuilder->setMethods(array_keys($this->methods));
+                $mockBuilder->setMethods($this->extractMethods());
             }
             if ($args) {
                 $mockBuilder->setConstructorArgs($args);
@@ -46,9 +47,9 @@ class MockWriter
                 $mockBuilder->disableOriginalConstructor();
             }
             $mock = $mockBuilder->getMock();
-            foreach ($this->methods as $method => $item) {
+            foreach ($this->items as $item) {
                 $expect = $mock->expects($item['expects'])
-                    ->method($method)
+                    ->method($item['method'])
                     ->will($item['will']);
                 if (!is_null($item['with'])) {
                     call_user_func_array(array($expect, 'with'), $item['with']);
@@ -63,13 +64,13 @@ class MockWriter
         $will = TestCase::returnValue(null);
 
         if (count($args) == 1) {
-            if ($args[0] instanceof InvokedRecorder) {
+            if ($args[0] instanceof InvokedRecorder || $args[0] instanceof InvokedAtIndex) {
                 $expects = $args[0];
             } else {
                 $will = $args[0];
             }
         } elseif (count($args) == 2) {
-            if ($args[1] instanceof InvokedRecorder) {
+            if ($args[1] instanceof InvokedRecorder || $args[1] instanceof InvokedAtIndex) {
                 list($will, $expects) = $args;
             } elseif (is_array($args[0])) {
                 list($with, $will) = $args;
@@ -77,7 +78,7 @@ class MockWriter
                 throw new \InvalidArgumentException();
             }
         } elseif (count($args) == 3) {
-            if (is_array($args[0]) && $args[2] instanceof InvokedRecorder) {
+            if (is_array($args[0]) && ($args[2] instanceof InvokedRecorder || $args[2] instanceof InvokedAtIndex)) {
                 list($with, $will, $expects) = $args;
             } else {
                 throw new \InvalidArgumentException();
@@ -92,12 +93,28 @@ class MockWriter
             $will = PhpUnitTestCase::returnValue($will);
         }
 
-        $this->methods[$method] = array(
+        $this->items[] = array(
+            'method' => $method,
             'expects' => $expects,
             'with' => $with,
             'will' => $will,
         );
 
         return $this;
+    }
+
+    /**
+     * Extract methods from items
+     *
+     * @return array Unique method names
+     */
+    private function extractMethods()
+    {
+        $methods = array();
+        foreach ($this->items as $item) {
+            $methods[$item['method']] = true;
+        }
+
+        return array_keys($methods);
     }
 }
