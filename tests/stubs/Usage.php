@@ -12,4 +12,9 @@ class Usage
     {
         return 1;
     }
+
+    public static function getString()
+    {
+        return 'real string';
+    }
 }

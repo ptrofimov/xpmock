@@ -47,9 +47,13 @@ class MockWriter
                 $mockBuilder->disableOriginalConstructor();
             }
             $mock = $mockBuilder->getMock();
+            $reflection = new \ReflectionClass($this->className);
             foreach ($this->items as $item) {
-                $expect = $mock->expects($item['expects'])
-                    ->method($item['method'])
+                $expect = $reflection->hasMethod($item['method'])
+                    && $reflection->getMethod($item['method'])->isStatic()
+                    ? $mock::staticExpects($item['expects'])
+                    : $mock->expects($item['expects']);
+                $expect->method($item['method'])
                     ->will($item['will']);
                 if (!is_null($item['with'])) {
                     call_user_func_array(array($expect, 'with'), $item['with']);
