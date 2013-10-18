@@ -1,6 +1,8 @@
 # xpmock
 
 [![Build Status](https://travis-ci.org/ptrofimov/xpmock.png?branch=master)](https://travis-ci.org/ptrofimov/xpmock)
+[![Latest Stable Version](https://poser.pugx.org/ptrofimov/xpmock/v/stable.png)](https://packagist.org/packages/ptrofimov/xpmock)
+[![Total Downloads](https://poser.pugx.org/ptrofimov/xpmock/downloads.png)](https://packagist.org/packages/ptrofimov/xpmock)
 
 Introduction [[in English]](http://ptrofimov.github.io/) [[на русском]](http://habrahabr.ru/post/183010/)
 
