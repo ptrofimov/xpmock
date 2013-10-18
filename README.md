@@ -58,6 +58,8 @@ $this->stub('MyClass') // init stub (all methods return null by default)
 ->getNumber()
 // $mock->expects($this->any())->method('getNumber')->will($this->returnValue(1))
 ->getNumber(1)
+// $mock::staticExpects($this->any())->method('getNumber')->will($this->returnValue(1))
+->getNumber(1)
 // $mock->expects($this->any())->method('getNumber')->will($this->returnValue(1))
 ->getNumber($this->returnValue(1))
 // $mock->expects($this->once())->method('getNumber')->will($this->returnValue(null))
@@ -138,7 +140,7 @@ class MyTestCase extends \Xpmock\TestCase
 
 ## NEW
 
-If you need to create object with some methods and classname doesn't matter, you could easily do it like this:
+1. If you need to create object with some methods and classname doesn't matter, you could easily do it like this:
 ```php
 $mock = $this->mock()
     ->getString('string')
@@ -147,3 +149,5 @@ $mock = $this->mock()
     })
     ->new();
 ```
+
+2. Mocking static methods
