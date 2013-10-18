@@ -151,3 +151,4 @@ $mock = $this->mock()
 ```
 
 2. Mocking static methods
+3. Mocking abstract methods

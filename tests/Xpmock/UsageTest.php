@@ -2,6 +2,7 @@
 namespace Xpmock;
 
 require_once(dirname(__DIR__) . '/stubs/Usage.php');
+require_once(dirname(__DIR__) . '/stubs/AbstractClass.php');
 
 class UsageTest extends TestCase
 {
@@ -220,5 +221,15 @@ class UsageTest extends TestCase
         $this->assertSame('fake string', $mock->getString());
         $this->assertSame('fake string', $mock::getString());
         $this->assertSame(1, $mock->getNumber());
+    }
+
+    public function testMockAbstractMethod()
+    {
+        $mock = $this->mock('Stubs\AbstractClass')
+            ->getString('fake string')
+            ->new();
+
+        $this->assertSame('fake string', $mock->getString());
+        $this->assertSame(2, $mock->getNumber());
     }
 }
