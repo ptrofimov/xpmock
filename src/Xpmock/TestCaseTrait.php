@@ -8,9 +8,9 @@ trait TestCaseTrait
      *
      * @return MockWriter
      */
-    public function mock($className = 'stdClass')
+    public function mock($className = 'stdClass', array $object = null)
     {
-        return new MockWriter($className, $this);
+        return new MockWriter($className, $this, $object);
     }
 
     /**
@@ -18,9 +18,9 @@ trait TestCaseTrait
      *
      * @return MockWriter
      */
-    public function stub($className)
+    public function stub($className, array $object = null)
     {
-        return new MockWriter($className, $this, true);
+        return new MockWriter($className, $this, $object, true);
     }
 
     /**

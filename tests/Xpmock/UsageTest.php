@@ -232,4 +232,16 @@ class UsageTest extends TestCase
         $this->assertSame('fake string', $mock->getString());
         $this->assertSame(2, $mock->getNumber());
     }
+
+    public function testBriefSyntax()
+    {
+        $mock = $this->mock(
+            'Stubs\Usage',
+            ['getNumber' => 2]
+        )->new();
+
+        $this->assertInstanceOf('Stubs\Usage', $mock);
+        $this->assertSame(2, $mock->getNumber());
+        $this->assertSame('real string', $mock->getString());
+    }
 }

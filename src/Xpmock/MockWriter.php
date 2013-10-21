@@ -26,11 +26,26 @@ class MockWriter
      * @param TestCase $testCase
      * @param bool $isStub
      */
-    public function __construct($className, PhpUnitTestCase $testCase, $isStub = false)
+    public function __construct(
+        $className,
+        PhpUnitTestCase $testCase,
+        array $object = null,
+        $isStub = false
+    )
     {
         $this->className = (string) $className;
         $this->testCase = $testCase;
         $this->isStub = $isStub === true;
+        if (!is_null($object)) {
+            foreach ($object as $method => $will) {
+                $this->items[] = array(
+                    'method' => $method,
+                    'expects' => TestCase::any(),
+                    'with' => null,
+                    'will' => TestCase::returnValue($will),
+                );
+            }
+        }
     }
 
     /** @return self|MockObject */
