@@ -237,7 +237,7 @@ class UsageTest extends TestCase
     {
         $mock = $this->mock(
             'Stubs\Usage',
-            ['getNumber' => 2]
+            array('getNumber' => 2)
         )->new();
 
         $this->assertInstanceOf('Stubs\Usage', $mock);
