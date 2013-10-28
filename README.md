@@ -156,3 +156,11 @@ $mock = $this->mock()
 ```php
 $mock = $this->mock('MyClass', ['getNumber' => 1])->new();
 ```
+
+5. Special method this() inside each mock gives you possibility to change
+non-public properties and call non-public methods of mock via Xpmock\Reflection
+```php
+$mock = $this->mock('MyClass')->new();
+$mock->this()->protectedProperty = 'value';
+$mock->this()->protectedMethod();
+```

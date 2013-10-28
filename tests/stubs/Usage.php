@@ -3,6 +3,8 @@ namespace Stubs;
 
 class Usage
 {
+    protected $property = 'real property';
+
     public function __construct($value)
     {
         throw new \RuntimeException("Value $value from constructor");
@@ -16,5 +18,10 @@ class Usage
     public static function getString()
     {
         return 'real string';
+    }
+
+    public function getProperty()
+    {
+        return $this->property;
     }
 }

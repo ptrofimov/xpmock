@@ -54,7 +54,9 @@ class MockWriter
         if ($method == 'new') {
             $mockBuilder = $this->testCase->getMockBuilder($this->className);
             if (!$this->isStub) {
-                $mockBuilder->setMethods($this->extractMethods());
+                $mockBuilder->setMethods(
+                    array_merge($this->extractMethods(), array('this'))
+                );
             }
             if ($args) {
                 $mockBuilder->setConstructorArgs($args);
@@ -74,6 +76,9 @@ class MockWriter
                     call_user_func_array(array($expect, 'with'), $item['with']);
                 }
             }
+            $mock->expects(TestCase::any())
+                ->method('this')
+                ->will(TestCase::returnValue(new Reflection($mock)));
 
             return $mock;
         }

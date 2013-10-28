@@ -244,4 +244,18 @@ class UsageTest extends TestCase
         $this->assertSame(2, $mock->getNumber());
         $this->assertSame('real string', $mock->getString());
     }
+
+    public function testMethodThis()
+    {
+        $mock = $this->mockUsage()
+            ->getNumber(2)
+            ->new();
+
+        $this->assertSame('real string', $mock->getString());
+        $this->assertSame(2, $mock->getNumber());
+        $this->assertInstanceOf('Xpmock\Reflection', $mock->this());
+        $this->assertSame('real property', $mock->getProperty());
+        $mock->this()->property = 'fake property';
+        $this->assertSame('fake property', $mock->getProperty());
+    }
 }
