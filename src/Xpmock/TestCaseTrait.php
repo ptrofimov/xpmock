@@ -10,7 +10,9 @@ trait TestCaseTrait
      */
     public function mock($className = 'stdClass', array $object = null)
     {
-        return new MockWriter($className, $this, $object);
+        $mockWriter = new MockWriter($className, $this, $object);
+
+        return $object ? $mockWriter->new() : $mockWriter;
     }
 
     /**

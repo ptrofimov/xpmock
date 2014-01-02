@@ -154,7 +154,7 @@ $mock = $this->mock()
 3. Mocking abstract methods
 4. Brief syntax to create mocks
 ```php
-$mock = $this->mock('MyClass', ['getNumber' => 1])->new();
+$mock = $this->mock('MyClass', ['getNumber' => 1]);
 ```
 
 5. Special method this() inside each mock gives you possibility to change
