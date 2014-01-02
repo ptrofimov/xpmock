@@ -20,6 +20,8 @@ class MockWriter
     private $items = array();
     /** @var bool */
     private $isStub;
+    /** @var array */
+    private $properties = array();
 
     /**
      * @param string $className
@@ -33,17 +35,22 @@ class MockWriter
         $isStub = false
     )
     {
-        $this->className = (string)$className;
+        $this->className = (string) $className;
         $this->testCase = $testCase;
         $this->isStub = $isStub === true;
         if (!is_null($object)) {
-            foreach ($object as $method => $will) {
-                $this->items[] = array(
-                    'method' => $method,
-                    'expects' => TestCase::any(),
-                    'with' => null,
-                    'will' => TestCase::returnValue($will),
-                );
+            $reflection = new \ReflectionClass($this->className);
+            foreach ($object as $key => $value) {
+                if ($reflection->hasMethod($key)) {
+                    $this->items[] = array(
+                        'method' => $key,
+                        'expects' => TestCase::any(),
+                        'with' => null,
+                        'will' => TestCase::returnValue($value),
+                    );
+                } elseif ($reflection->hasProperty($key)) {
+                    $this->properties[$key] = $value;
+                }
             }
         }
     }
@@ -79,6 +86,9 @@ class MockWriter
             $mock->expects(TestCase::any())
                 ->method('this')
                 ->will(TestCase::returnValue(new Reflection($mock)));
+            foreach ($this->properties as $key => $value) {
+                $mock->this()->{$key} = $value;
+            }
 
             return $mock;
         }

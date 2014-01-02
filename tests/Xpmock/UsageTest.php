@@ -237,12 +237,16 @@ class UsageTest extends TestCase
     {
         $mock = $this->mock(
             'Stubs\Usage',
-            array('getNumber' => 2)
+            array(
+                'getNumber' => 2,
+                'property' => 'fake property',
+            )
         );
 
         $this->assertInstanceOf('Stubs\Usage', $mock);
         $this->assertSame(2, $mock->getNumber());
         $this->assertSame('real string', $mock->getString());
+        $this->assertSame('fake property', $mock->getProperty());
     }
 
     public function testMethodThis()
