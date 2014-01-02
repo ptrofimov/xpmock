@@ -50,7 +50,6 @@ Tool generates full-functional native PHPUnit mocks.
 // init mock writer
 
 $this->mock('MyClass') // init mock (all methods are real by default)
-$this->stub('MyClass') // init stub (all methods return null by default)
 
 // mock methods
 
@@ -163,4 +162,33 @@ non-public properties and call non-public methods of mock via Xpmock\Reflection
 $mock = $this->mock('MyClass')->new();
 $mock->this()->protectedProperty = 'value';
 $mock->this()->protectedMethod();
+```
+
+6. You can use $this pointer inside your fake methods
+```php
+$mock = $this->mock('MyClass',
+    [
+        'property' => 1,
+        'getProperty' => function () {
+            return $this->property;
+        },
+    ]
+);
+```
+
+7. It is easy now to create mocks all methods of which return some value, for example null (stub)
+```php
+$mock = $this->mock('MyClass', null);
+```
+
+8. Very expected: now it is possible to adjust mocks after creation with magic method mock()
+```php
+$myClass = $this->mock('MyClass', null);
+
+$myClass->getNumber(); // null
+
+$myClass->mock()
+    ->getNumber(1);
+
+$myClass->getNumber(); // 1
 ```

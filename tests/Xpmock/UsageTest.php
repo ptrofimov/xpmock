@@ -268,4 +268,30 @@ class UsageTest extends TestCase
         $mock->this()->property = 'fake property';
         $this->assertSame('fake property', $mock->getProperty());
     }
+
+    public function testMockWhereAllMethodsReturnNull()
+    {
+        $mock = $this->mock('Stubs\Usage', null);
+
+        $this->assertInstanceOf('Stubs\Usage', $mock);
+
+        $this->assertNull($mock->getNumber());
+        $this->assertNull($mock->getString());
+        $this->assertNull($mock->getProperty());
+        $this->assertInstanceOf('Xpmock\Reflection', $mock->this());
+        $this->assertInstanceOf('Xpmock\MockAdjuster', $mock->mock());
+    }
+
+    public function testAdjustAfterCreation()
+    {
+        $mock = $this->mock('Stubs\Usage', null);
+
+        $this->assertNull($mock->getNumber());
+        $this->assertInstanceOf('Xpmock\MockAdjuster', $mock->mock());
+
+        $mock->mock()
+            ->getNumber(3);
+
+        $this->assertSame(3, $mock->getNumber());
+    }
 }

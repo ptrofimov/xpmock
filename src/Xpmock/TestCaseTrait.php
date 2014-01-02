@@ -5,24 +5,15 @@ trait TestCaseTrait
 {
     /**
      * @param string $className
+     * @param mixed $object
      *
      * @return MockWriter
      */
-    public function mock($className = 'stdClass', array $object = null)
+    public function mock($className = 'stdClass', $object = array())
     {
         $mockWriter = new MockWriter($className, $this, $object);
 
-        return $object ? $mockWriter->new() : $mockWriter;
-    }
-
-    /**
-     * @param string $className
-     *
-     * @return MockWriter
-     */
-    public function stub($className, array $object = null)
-    {
-        return new MockWriter($className, $this, $object, true);
+        return $object !== array() ? $mockWriter->new() : $mockWriter;
     }
 
     /**
