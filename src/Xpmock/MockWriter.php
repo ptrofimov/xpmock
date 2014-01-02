@@ -81,9 +81,10 @@ class MockWriter
                 : $mock->expects($item['expects']);
             $expect->method($item['method'])
                 ->will(
-                    $item['will'] instanceof \Closure && version_compare(PHP_VERSION, '5.4.0', '>=')
-                        ? PhpUnitTestCase::returnCallback($item['will']->bindTo($mock, $this->className))
-                        : $item['will']
+                    $item['will'] instanceof \Closure
+                        ? PhpUnitTestCase::returnCallback(
+                        version_compare(PHP_VERSION, '5.4.0', '>=') ? $item['will']->bindTo($mock, $this->className) : $item['will']
+                    ) : $item['will']
                 );
             if (!is_null($item['with'])) {
                 call_user_func_array(array($expect, 'with'), $item['with']);
