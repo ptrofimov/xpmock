@@ -41,15 +41,10 @@ class MockWriter
         if (!is_null($object)) {
             $reflection = new \ReflectionClass($this->className);
             foreach ($object as $key => $value) {
-                if ($reflection->hasMethod($key)) {
-                    $this->items[] = array(
-                        'method' => $key,
-                        'expects' => TestCase::any(),
-                        'with' => null,
-                        'will' => TestCase::returnValue($value),
-                    );
-                } elseif ($reflection->hasProperty($key)) {
+                if ($reflection->hasProperty($key)) {
                     $this->properties[$key] = $value;
+                } else {
+                    $this->addMethodExpectation($key, [$value]);
                 }
             }
         }
@@ -58,41 +53,51 @@ class MockWriter
     /** @return self|MockObject */
     public function __call($method, array $args)
     {
-        if ($method == 'new') {
-            $mockBuilder = $this->testCase->getMockBuilder($this->className);
-            if (!$this->isStub) {
-                $mockBuilder->setMethods(
-                    array_merge($this->extractMethods(), array('this'))
-                );
-            }
-            if ($args) {
-                $mockBuilder->setConstructorArgs($args);
-            } else {
-                $mockBuilder->disableOriginalConstructor();
-            }
-            $mock = $mockBuilder->getMock();
-            $reflection = new \ReflectionClass($this->className);
-            foreach ($this->items as $item) {
-                $expect = $reflection->hasMethod($item['method'])
-                && $reflection->getMethod($item['method'])->isStatic()
-                    ? $mock::staticExpects($item['expects'])
-                    : $mock->expects($item['expects']);
-                $expect->method($item['method'])
-                    ->will($item['will']);
-                if (!is_null($item['with'])) {
-                    call_user_func_array(array($expect, 'with'), $item['with']);
-                }
-            }
-            $mock->expects(TestCase::any())
-                ->method('this')
-                ->will(TestCase::returnValue(new Reflection($mock)));
-            foreach ($this->properties as $key => $value) {
-                $mock->this()->{$key} = $value;
-            }
+        return $method == 'new'
+            ? $this->buildMock($args)
+            : $this->addMethodExpectation($method, $args);
+    }
 
-            return $mock;
+    /** @return MockObject */
+    private function buildMock(array $args)
+    {
+        $mockBuilder = $this->testCase->getMockBuilder($this->className);
+        if (!$this->isStub) {
+            $mockBuilder->setMethods(
+                array_merge($this->extractMethods(), array('this'))
+            );
+        }
+        if ($args) {
+            $mockBuilder->setConstructorArgs($args);
+        } else {
+            $mockBuilder->disableOriginalConstructor();
+        }
+        $mock = $mockBuilder->getMock();
+        $reflection = new \ReflectionClass($this->className);
+        foreach ($this->items as $item) {
+            $expect = $reflection->hasMethod($item['method'])
+            && $reflection->getMethod($item['method'])->isStatic()
+                ? $mock::staticExpects($item['expects'])
+                : $mock->expects($item['expects']);
+            $expect->method($item['method'])
+                ->will($item['will'] instanceof \Closure ? PhpUnitTestCase::returnCallback($item['will']->bindTo($mock, $this->className)) : $item['will']);
+            if (!is_null($item['with'])) {
+                call_user_func_array(array($expect, 'with'), $item['with']);
+            }
+        }
+        $mock->expects(TestCase::any())
+            ->method('this')
+            ->will(TestCase::returnValue(new Reflection($mock)));
+        foreach ($this->properties as $key => $value) {
+            $mock->this()->{$key} = $value;
         }
 
+        return $mock;
+    }
+
+    /** @return self */
+    private function addMethodExpectation($method, array $args)
+    {
         $expects = TestCase::any();
         $with = null;
         $will = TestCase::returnValue(null);
@@ -119,11 +124,9 @@ class MockWriter
             }
         }
 
-        if ($will instanceof \Closure) {
-            $will = PhpUnitTestCase::returnCallback($will);
-        } elseif ($will instanceof \Exception) {
+        if ($will instanceof \Exception) {
             $will = PhpUnitTestCase::throwException($will);
-        } elseif (!$will instanceof Stub) {
+        } elseif (!$will instanceof Stub && !$will instanceof \Closure) {
             $will = PhpUnitTestCase::returnValue($will);
         }
 

@@ -240,6 +240,9 @@ class UsageTest extends TestCase
             array(
                 'getNumber' => 2,
                 'property' => 'fake property',
+                'getPropertyTwice' => function () {
+                        return $this->property . $this->property;
+                    },
             )
         );
 
@@ -247,6 +250,7 @@ class UsageTest extends TestCase
         $this->assertSame(2, $mock->getNumber());
         $this->assertSame('real string', $mock->getString());
         $this->assertSame('fake property', $mock->getProperty());
+        $this->assertSame('fake propertyfake property', $mock->getPropertyTwice());
     }
 
     public function testMethodThis()
