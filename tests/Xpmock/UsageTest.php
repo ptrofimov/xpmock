@@ -250,7 +250,9 @@ class UsageTest extends TestCase
         $this->assertSame(2, $mock->getNumber());
         $this->assertSame('real string', $mock->getString());
         $this->assertSame('fake property', $mock->getProperty());
-        $this->assertSame('fake propertyfake property', $mock->getPropertyTwice());
+        if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
+            $this->assertSame('fake propertyfake property', $mock->getPropertyTwice());
+        }
     }
 
     public function testMethodThis()
