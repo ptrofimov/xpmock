@@ -6,6 +6,8 @@
 
 Introduction [[in English]](http://ptrofimov.github.io/) [[на русском]](http://habrahabr.ru/post/183010/)
 
+**!!! New version 1.1.5: [multiple improvements](https://github.com/ptrofimov/xpmock#new)**
+
 PHPUnit is standard testing framework in PHP world.
 No wonder - it is nifty.
 But speaking about way of mocking objects in PHPUnit many people complain on a bit redundant syntax.
