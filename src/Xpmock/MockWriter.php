@@ -44,7 +44,7 @@ class MockWriter
                 if ($reflection->hasProperty($key)) {
                     $this->properties[$key] = $value;
                 } else {
-                    $this->addMethodExpectation($key, [$value]);
+                    $this->addMethodExpectation($key, array($value));
                 }
             }
         }
