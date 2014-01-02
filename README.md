@@ -184,11 +184,8 @@ $mock = $this->mock('MyClass', null);
 8. Very expected: now it is possible to adjust mocks after creation with magic method mock()
 ```php
 $myClass = $this->mock('MyClass', null);
-
 $myClass->getNumber(); // null
-
 $myClass->mock()
     ->getNumber(1);
-
 $myClass->getNumber(); // 1
 ```

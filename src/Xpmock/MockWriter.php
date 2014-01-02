@@ -19,7 +19,7 @@ class MockWriter extends Base
      * @param string $className
      * @param TestCase $testCase
      */
-    public function __construct($className, PhpUnitTestCase $testCase, $object = [])
+    public function __construct($className, PhpUnitTestCase $testCase, $object = array())
     {
         $this->className = (string) $className;
         $this->testCase = $testCase;
