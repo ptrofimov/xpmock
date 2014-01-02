@@ -33,7 +33,7 @@ class MockWriter
         $isStub = false
     )
     {
-        $this->className = (string) $className;
+        $this->className = (string)$className;
         $this->testCase = $testCase;
         $this->isStub = $isStub === true;
         if (!is_null($object)) {
@@ -67,7 +67,7 @@ class MockWriter
             $reflection = new \ReflectionClass($this->className);
             foreach ($this->items as $item) {
                 $expect = $reflection->hasMethod($item['method'])
-                    && $reflection->getMethod($item['method'])->isStatic()
+                && $reflection->getMethod($item['method'])->isStatic()
                     ? $mock::staticExpects($item['expects'])
                     : $mock->expects($item['expects']);
                 $expect->method($item['method'])

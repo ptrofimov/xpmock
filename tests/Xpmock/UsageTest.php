@@ -46,10 +46,10 @@ class UsageTest extends TestCase
     {
         $mock = $this->mockUsage()
             ->getNumber(
-            function () {
-                return 156;
-            }
-        )
+                function () {
+                    return 156;
+                }
+            )
             ->new();
 
         $this->assertSame(156, $mock->getNumber());
@@ -201,10 +201,10 @@ class UsageTest extends TestCase
             ->method1(1)
             ->method2(2)
             ->method3(
-            function () {
-                return 3;
-            }
-        )->new();
+                function () {
+                    return 3;
+                }
+            )->new();
 
         $this->assertInstanceOf('stdClass', $mock);
         $this->assertSame(1, $mock->method1());
