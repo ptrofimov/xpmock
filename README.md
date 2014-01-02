@@ -16,7 +16,7 @@ And this project XPMock is a way to simplify this syntax a bit.
 I need to underline that XPMock doesn't create some own mock objects.
 XPMock just calls the same PHPUnit methods creating the same native mocks but much simpler.
 
-Write this
+### Write this
 ```php
 $this->mock('MyClass')
     ->getBool(true)
@@ -24,7 +24,7 @@ $this->mock('MyClass')
     ->getString('string')
     ->new();
 ```
-instead of that
+### instead of that
 ```php
 $mock = $this->getMockBuilder('MyClass')
     ->setMethods(['getBool', 'getNumber', 'getString'])
