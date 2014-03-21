@@ -144,6 +144,23 @@ class UsageTest extends TestCase
         $this->cleanupMock($mock);
     }
 
+    public function testWithExpects()
+    {
+        $mock = $this->mockUsage()
+            ->getNumber(array(1, 2, 3), $this->once())
+            ->new();
+
+        $this->assertEquals(null, $mock->getNumber(1, 2, 3));
+
+        try {
+            $mock->getNumber(1, 2, 3);
+            $this->fail();
+        } catch (\PHPUnit_Framework_ExpectationFailedException $ex) {
+        }
+
+        $this->cleanupMock($mock);
+    }
+
     /**
      * @expectedException \InvalidArgumentException
      */
