@@ -24,7 +24,11 @@ class Base
             }
         } elseif (count($args) == 2) {
             if ($args[1] instanceof InvokedRecorder || $args[1] instanceof InvokedAtIndex) {
-                list($will, $expects) = $args;
+                if (is_array($args[0])) {
+                    list($with, $expects) = $args;
+                } else {
+                    list($will, $expects) = $args;
+                }
             } elseif (is_array($args[0])) {
                 list($with, $will) = $args;
             } else {
