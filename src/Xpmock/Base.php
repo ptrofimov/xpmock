@@ -69,7 +69,7 @@ class Base
             ->will(
                 $expectation['will'] instanceof \Closure
                     ? PhpUnitTestCase::returnCallback(
-                    version_compare(PHP_VERSION, '5.4.0', '>=') ? $expectation['will']->bindTo($mock, $reflection->getName()) : $expectation['will']
+                    version_compare(PHP_VERSION, '5.4.0', '>=') && !version_compare(PHP_VERSION, '7.0.0', '>=') ? $expectation['will']->bindTo($mock, $reflection->getName()) : $expectation['will']
                 ) : $expectation['will']
             );
         if (!is_null($expectation['with'])) {
